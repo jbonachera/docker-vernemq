@@ -1,6 +1,6 @@
 FROM jbonachera/arch
 ENV VERSION=1.0.1
-RUN pacman -S --noconfirm git make erlang gcc
+RUN pacman -S --noconfirm git make erlang-nox gcc
 RUN git clone --branch ${VERSION} https://github.com/erlio/vernemq.git /usr/local/src/vernemq
 RUN cd /usr/local/src/vernemq && \
     make rel && \
