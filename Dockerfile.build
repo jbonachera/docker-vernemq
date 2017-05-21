@@ -1,0 +1,11 @@
+FROM alpine
+ENV VERSION=1.0.1
+RUN apk -U add erlang-crypto gcc g++ make git erlang-asn1 erlang-public-key erlang-ssl erlang-tools erlang-dialyzer erlang-sasl erlang-eunit erlang-inets \
+               erlang-syntax-tools erlang-dev bsd-compat-headers erlang-erl-interface erlang-parsetools openssl-dev erlang-runtime-tools erlang-eldap \
+               erlang-os-mon
+CMD git clone --depth=1 --branch ${VERSION} https://github.com/erlio/vernemq.git /usr/local/src/vernemq && \
+    cd /usr/local/src/vernemq && \
+    make relclean && ls && \
+    make rel && \
+    cd _build/default/lib/eleveldb/ && make clean && make && cd - && \
+    mv _build/default/rel/vernemq/ /mnt/release

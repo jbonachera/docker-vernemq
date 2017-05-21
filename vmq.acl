@@ -1,0 +1,2 @@
+pattern read tenants/%u/#
+pattern write tenants/%u/#

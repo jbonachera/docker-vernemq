@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 SELF_IP="127.0.0.1"
 if [[ -n "$SERVICE_NAME" ]]; then
@@ -13,11 +13,24 @@ if [ $? -ne 1 ]; then
     echo "$(cat /usr/share/vernemq/bin/../etc/vernemq.conf)"
     exit 1
 fi
-echo running exec /usr/share/vernemq/bin/vernemq start
+echo running /usr/share/vernemq/bin/vernemq start
 /usr/share/vernemq/bin/vernemq start
-ps aux | grep '[b]eam.smp' | awk '{print $2}' > /var/run/vernemq.pid
+output=""
+echo -n "waiting for node to finish booting"
+while [[ "$output" != "pong" ]]; do
+  echo -n "."
+  sleep 0.1
+  output=$(/usr/share/vernemq/bin/vernemq ping)
+done
+echo "done"
+tail -F /var/log/vernemq/* &
+/usr/share/vernemq/bin/vernemq getpid  > /var/run/vernemq.pid
+
 for node in ${NODES}; do
   echo "trying to join node $node"
   vmq-admin cluster join discovery-node=$node
 done
-fork_proxy.sh /var/run/vernemq.pid
+
+echo "config:"
+cat /etc/vernemq/vernemq.conf | while read line; do echo -e "\t$line"; done
+fork_proxy.sh /var/run/vernemq.pid "echo started"

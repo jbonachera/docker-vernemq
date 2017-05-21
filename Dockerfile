@@ -1,12 +1,21 @@
-FROM jbonachera/arch
-ENV VERSION=1.0.1
-RUN pacman -S --noconfirm git make erlang-nox gcc
-RUN git clone --branch ${VERSION} https://github.com/erlio/vernemq.git /usr/local/src/vernemq
-RUN cd /usr/local/src/vernemq && \
-    make rel && \
-    mv _build/default/rel/vernemq/ /usr/share/vernemq
+#Inspired from https://github.com/erlio/docker-vernemq/blob/master/Dockerfile
+FROM jbonachera/alpine
+MAINTAINER Julien BONACHERA <julien+docker-vernemq@bonachera.fr>
+# MQTT
+EXPOSE 1883
+# MQTT/SSL
+EXPOSE 8883
+# MQTT WebSockets
+EXPOSE 8080
+# Prometheus Metrics
+EXPOSE 8888
+VOLUME ["/var/log/vernemq", "/var/lib/vernemq"]
+
+COPY release/vernemq /usr/share/vernemq
+RUN apk -U add libstdc++
 RUN mkdir /etc/vernemq/
 COPY vernemq.conf.j2 /etc/vernemq/vernemq.conf.j2
+COPY vmq.acl /etc/vernemq/vmq.acl
 COPY entrypoint /sbin/entrypoint
 RUN ln -sf /etc/vernemq/vernemq.conf /usr/share/vernemq/etc/vernemq.conf
 ENTRYPOINT ["/sbin/entrypoint"]
