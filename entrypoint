@@ -2,8 +2,11 @@
 
 SELF_IP="127.0.0.1"
 if [[ -n "$SERVICE_NAME" ]]; then
+  echo "service name given: $SERVICE_NAME - we are running in swarm mode"
   SELF_IP=$(dig +short $(hostname))
   NODES=$(dig +short tasks.${SERVICE_NAME})
+  echo "self ip: $SELF_IP"
+  echo "peer nodes: $NODES"
 fi
 export SELF_IP
 render.py /etc/vernemq/vernemq.conf.j2 > /etc/vernemq/vernemq.conf
