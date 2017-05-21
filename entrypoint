@@ -38,7 +38,7 @@ tail -F /var/log/vernemq/* &
 
 for node in ${NODES}; do
   echo "trying to join node $node"
-  vmq-admin cluster join discovery-node=$node
+  /usr/share/vernemq/bin/vmq-admin cluster join discovery-node=$node
 done
 
 echo "config:"
