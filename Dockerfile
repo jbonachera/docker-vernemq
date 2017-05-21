@@ -12,7 +12,7 @@ EXPOSE 8888
 VOLUME ["/var/log/vernemq", "/var/lib/vernemq"]
 
 COPY release/vernemq /usr/share/vernemq
-RUN apk -U add libstdc++
+RUN apk -U add libstdc++ bind-tools
 RUN mkdir /etc/vernemq/
 COPY vernemq.conf.j2 /etc/vernemq/vernemq.conf.j2
 COPY vmq.acl /etc/vernemq/vmq.acl
