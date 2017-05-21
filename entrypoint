@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SELF_IP="127.0.0.1"
+LISTEN_IP="0.0.0.0"
 if [[ -n "$SERVICE_NAME" ]]; then
   echo "service name given: $SERVICE_NAME - we are running in swarm mode"
   # wait for all nodes to appear
@@ -12,10 +13,12 @@ if [[ -n "$SERVICE_NAME" ]]; then
     number_of_nodes=$(( $(echo $NODES | grep -o '\s' | wc -l) + 1 )) >/dev/null
     echo "we found $number_of_nodes nodes"
   done
+  LISTEN_IP=$SELF_IP
   echo "self ip: $SELF_IP"
   echo "peer nodes: $NODES"
 fi
 export SELF_IP
+export LISTEN_IP
 render.py /etc/vernemq/vernemq.conf.j2 > /etc/vernemq/vernemq.conf
 /usr/share/vernemq/bin/vernemq config generate | grep error
 if [ $? -ne 1 ]; then
