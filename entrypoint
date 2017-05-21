@@ -3,6 +3,16 @@
 SELF_IP="127.0.0.1"
 LISTEN_IP="0.0.0.0"
 MIN_NODES_SIZE="${MIN_NODES_SIZE:-3}"
+SSL_AUTH="no"
+SSL_CA=""
+SSL_CERT=""
+SSL_KEY=""
+if [[ "$SSL_AUTH" == "yes" ]]; then
+  export SSL_AUTH
+  echo $SSL_CA > /etc/vernemq/cacerts.pem
+  echo $SSL_CERT >  /etc/vernemq/cert.pem
+  echo $SSL_KEY > /etc/vernemq/key.pem
+fi
 if [[ -n "$SERVICE_NAME" ]]; then
   echo "service name given: $SERVICE_NAME - we are running in swarm mode"
   # wait for all nodes to appear

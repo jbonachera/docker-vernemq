@@ -50,4 +50,11 @@ listener.tcp.default = {{ LISTEN_IP }}:1883
 listener.ws.default = {{ LISTEN_IP }}:8080
 listener.vmq.clustering = {{ SELF_IP }}:44053
 listener.http.metrics = {{ LISTEN_IP }}:8888
-
+{% if SSL_AUTH == "yes" %}
+listener.ssl.default = {{ LISTEN_IP }}:8883
+listener.ssl.cafile = /etc/vernemq/cacerts.pem
+listener.ssl.certfile = /etc/vernemq/cert.pem
+listener.ssl.keyfile = /etc/vernemq/key.pem
+listener.ssl.require_certificate = on
+listener.ssl.use_identity_as_username = on
+{% endif %}
