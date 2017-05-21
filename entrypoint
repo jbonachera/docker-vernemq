@@ -2,6 +2,7 @@
 
 SELF_IP="127.0.0.1"
 LISTEN_IP="0.0.0.0"
+MIN_NODES_SIZE="${MIN_NODES_SIZE:-3}"
 if [[ -n "$SERVICE_NAME" ]]; then
   echo "service name given: $SERVICE_NAME - we are running in swarm mode"
   # wait for all nodes to appear
