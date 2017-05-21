@@ -1,0 +1,12 @@
+sudo: required
+language: c
+services:
+  - docker
+script:
+  - make
+  - docker build -t jbonachera/vernemq:$TRAVIS_COMMIT . ;
+after_success:
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker push jbonachera/vernemq:$TRAVIS_COMMIT;
+  - docker tag jbonachera/vernemq:$TRAVIS_COMMIT jbonachera/vernemq:latest
+  - docker push jbonachera/vernemq:latest
