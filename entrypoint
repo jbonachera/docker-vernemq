@@ -13,7 +13,6 @@ if [[ -n "$SERVICE_NAME" ]]; then
     number_of_nodes=$(( $(echo $NODES | grep -o '\s' | wc -l) + 1 )) >/dev/null
     echo "we found $number_of_nodes nodes"
   done
-  LISTEN_IP=$SELF_IP
   echo "self ip: $SELF_IP"
   echo "peer nodes: $NODES"
 fi
