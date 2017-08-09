@@ -4,9 +4,9 @@ SELF_IP="127.0.0.1"
 LISTEN_IP="0.0.0.0"
 MIN_NODES_SIZE="${MIN_NODES_SIZE:-3}"
 SSL_AUTH="${SSL_AUTH:-"no"}"
-SSL_CA=""
-SSL_CERT=""
-SSL_KEY=""
+SSL_CA="${SSL_CA:-"/run/secrets/mqtt_ca_cert"}"
+SSL_CERT="${SSL_CERT:-"/run/secrets/mqtt_server_cert"}"
+SSL_KEY="${SSL_KEY:-"/run/secrets/mqtt_server_key"}"
 if [[ "$SSL_AUTH" == "yes" ]]; then
   export SSL_AUTH
 fi

@@ -52,9 +52,9 @@ listener.vmq.clustering = {{ SELF_IP }}:44053
 listener.http.metrics = {{ LISTEN_IP }}:8888
 {% if SSL_AUTH == "yes" %}
 listener.ssl.default = {{ LISTEN_IP }}:8883
-listener.ssl.cafile = /run/secrets/mqtt_ca_cert
-listener.ssl.certfile = /run/secrets/mqtt_server_cert
-listener.ssl.keyfile = /run/secrets/mqtt_server_key
+listener.ssl.cafile = {{ SSL_CA }}
+listener.ssl.certfile = {{ SSL_CERT }}
+listener.ssl.keyfile = {{ SSL_KEY }}
 listener.ssl.require_certificate = on
 listener.ssl.use_identity_as_username = on
 {% endif %}
