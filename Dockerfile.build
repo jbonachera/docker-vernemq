@@ -1,5 +1,5 @@
 FROM alpine
-ENV VERSION=1.1.0
+ENV VERSION=1.1.1
 RUN apk -U add erlang-crypto gcc g++ make git erlang-asn1 erlang-public-key erlang-ssl erlang-tools erlang-dialyzer erlang-sasl erlang-eunit erlang-inets \
                erlang-syntax-tools erlang-dev bsd-compat-headers erlang-erl-interface erlang-parsetools openssl-dev erlang-runtime-tools erlang-eldap \
                erlang-os-mon
