@@ -1,2 +1,2 @@
-pattern read tenants/%u/#
-pattern write tenants/%u/#
+topic write #
+topic read #
