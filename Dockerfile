@@ -20,3 +20,4 @@ COPY entrypoint /sbin/entrypoint
 RUN ln -sf /etc/vernemq/vernemq.conf /usr/share/vernemq/etc/vernemq.conf
 HEALTHCHECK --interval=10s --timeout=3s CMD [[ $(/usr/share/vernemq/bin/vernemq ping) == "pong" ]]
 ENTRYPOINT ["/sbin/entrypoint"]
+STOPSIGNAL SIGTERM

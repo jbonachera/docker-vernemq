@@ -44,8 +44,25 @@ while [[ "$output" != "pong" ]]; do
   output=$(/usr/share/vernemq/bin/vernemq ping)
 done
 echo "done"
-tail -F /var/log/vernemq/* &
-/usr/share/vernemq/bin/vernemq getpid  > /var/run/vernemq.pid
+pid=$(ps aux | grep '[b]eam.smp' | awk '{print $1}')
+echo $pid > /var/run/vernemq.pid
+
+
+# SIGTERM-handler
+# https://github.com/erlio/docker-vernemq/blob/master/bin/vernemq.sh
+sigterm_handler() {
+    echo caught SIGTERM
+    if [ $pid -ne 0 ]; then
+        echo starting shutdown
+        # this will stop the VerneMQ process
+        /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -t 20
+        /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -k
+        sleep 10
+        wait "$!"
+    fi
+    exit 143; # 128 + 15 -- SIGTERM
+}
+
 
 for node in ${NODES}; do
   echo "trying to join node $node"
@@ -54,4 +71,6 @@ done
 
 echo "config:"
 cat /etc/vernemq/vernemq.conf | while read line; do echo -e "\t$line"; done
-fork_proxy.sh /var/run/vernemq.pid "echo started"
+trap 'kill $!; sigterm_handler' 15
+tail -F /var/log/vernemq/*.log &
+wait $!
