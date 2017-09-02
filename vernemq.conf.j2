@@ -1,8 +1,8 @@
 allow_anonymous = {{ ALLOW_ANONYMOUS | default("off") }}
-allow_register_during_netsplit = off
-allow_publish_during_netsplit = off
-allow_subscribe_during_netsplit = off
-allow_unsubscribe_during_netsplit = off
+allow_register_during_netsplit = {{ ALLOW_REGISTER_NETSPLIT | default("off") }}
+allow_publish_during_netsplit = {{ ALLOW_PUBLISH_NETSPLIT | default("off") }}
+allow_subscribe_during_netsplit = {{ ALLOW_SUBSCRIBE_NETSPLIT | default("off") }}
+allow_unsubscribe_during_netsplit = {{ ALLOW_UNSUBSCRIBE_NETSPLIT | default("off") }}
 allow_multiple_sessions = off
 max_inflight_messages = 20
 max_online_messages = 1000
