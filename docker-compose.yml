@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+  vernemq:
+    build:
+      context: .
+    environment:
+      - ALLOW_ANONYMOUS=on
+      - SERVICE_NAME=vernemq
+      - DISCOVERY_NAME=vernemq
+      - ALLOW_SUBSCRIBE_NETSPLIT=on
+      - ALLOW_UNSUBSCRIBE_NETSPLIT=on
+      - ALLOW_REGISTER_NETSPLIT=on
+      - ALLOW_PUBLISH_NETSPLIT=on
+    networks:
+      - mqtt
+    ports:
+      - 1883
+networks:
+  mqtt:
+
