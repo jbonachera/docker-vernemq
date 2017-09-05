@@ -14,13 +14,14 @@ fi
 if [[ -n "$SERVICE_NAME" ]]; then
   echo "service name given: $SERVICE_NAME - we are running in cluster mode"
   # wait for all nodes to appear
+  SELF_IP=""
   number_of_nodes=1
-  while [[ "$SELF_IP" -eq "" ]]; do
+  while [[ "$SELF_IP" == "" ]]; do
+    SELF_IP=$(dig +short $(hostname))
     sleep 1
   done
   while [[ $number_of_nodes -lt ${MIN_NODES_SIZE} ]]; do
     sleep 1
-    SELF_IP=$(dig +short $(hostname))
     NODES=$(dig +short ${DISCOVERY_NAME})
     number_of_nodes=$(( $(echo $NODES | grep -o '\s' | wc -l) + 1 )) >/dev/null
     echo "we found $number_of_nodes nodes behind '${DISCOVERY_NAME}'"
