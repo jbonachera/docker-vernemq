@@ -3,7 +3,7 @@ services:
   vernemq:
     build:
       context: .
-    image: jbonachera/vernemq
+    image: jbonachera/vernemq:v0.0.1
     deploy:
       mode: replicated
       replicas: 3
