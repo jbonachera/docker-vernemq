@@ -19,6 +19,7 @@ COPY vernemq.conf.j2 /etc/vernemq/vernemq.conf.j2
 COPY vmq.acl /etc/vernemq/vmq.acl
 COPY entrypoint /sbin/entrypoint
 RUN ln -sf /etc/vernemq/vernemq.conf /usr/share/vernemq/etc/vernemq.conf
+ENV PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/share/vernemq/bin/
 HEALTHCHECK --interval=10s --timeout=3s CMD [[ $(/usr/share/vernemq/bin/vernemq ping) == "pong" ]]
 ENTRYPOINT ["/sbin/entrypoint"]
 STOPSIGNAL SIGTERM
