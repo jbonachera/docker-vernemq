@@ -3,10 +3,23 @@ services:
   vernemq:
     build:
       context: .
+    image: jbonachera/vernemq
+    deploy:
+      mode: replicated
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 30s
+      restart_policy:
+        condition: any
+    healthcheck:
+      test: ["CMD", "true"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
     environment:
       - ALLOW_ANONYMOUS=on
       - SERVICE_NAME=vernemq
-      - DISCOVERY_NAME=vernemq
       - ALLOW_SUBSCRIBE_NETSPLIT=on
       - ALLOW_UNSUBSCRIBE_NETSPLIT=on
       - ALLOW_REGISTER_NETSPLIT=on
