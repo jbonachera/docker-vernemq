@@ -19,6 +19,7 @@ if [[ -n "$SERVICE_NAME" ]]; then
     sleep 1
   done
   while [[ $number_of_nodes -lt ${MIN_NODES_SIZE} ]]; do
+    sleep 1
     SELF_IP=$(dig +short $(hostname))
     NODES=$(dig +short ${DISCOVERY_NAME})
     number_of_nodes=$(( $(echo $NODES | grep -o '\s' | wc -l) + 1 )) >/dev/null
