@@ -61,7 +61,7 @@ sigterm_handler() {
         # this will stop the VerneMQ process
         /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -t 20
         /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -k
-        wait "$!"
+        sleep 10
     fi
     exit 143; # 128 + 15 -- SIGTERM
 }
