@@ -69,7 +69,7 @@ sigterm_handler() {
 
 for node in ${NODES}; do
   echo "trying to join node $node"
-  /usr/share/vernemq/bin/vmq-admin cluster join discovery-node=VerneMQ@$node
+  /usr/share/vernemq/bin/vmq-admin cluster join discovery-node=VerneMQ@$node | grep Done && break
 done
 
 echo "config:"
