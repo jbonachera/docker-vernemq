@@ -22,7 +22,7 @@ if [[ -n "$SERVICE_NAME" ]]; then
   done
   while [[ $number_of_nodes -lt ${MIN_NODES_SIZE} ]]; do
     sleep 1
-    NODES=$(dig +short ${DISCOVERY_NAME})
+    NODES=$(dig +short ${DISCOVERY_NAME} | sort)
     number_of_nodes=$(( $(echo $NODES | grep -o '\s' | wc -l) + 1 )) >/dev/null
     echo "we found $number_of_nodes nodes behind '${DISCOVERY_NAME}'"
   done
