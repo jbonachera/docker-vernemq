@@ -27,7 +27,6 @@ if [[ -n "$SERVICE_NAME" ]]; then
     echo "we found $number_of_nodes nodes behind '${DISCOVERY_NAME}'"
   done
   echo "self ip: $SELF_IP"
-  echo "peer nodes: $NODES"
   export NODES
 fi
 export SELF_IP
@@ -41,28 +40,22 @@ if [ $? -ne 1 ]; then
     exit 1
 fi
 
+pid=0
 
 # SIGTERM-handler
 # https://github.com/erlio/docker-vernemq/blob/master/bin/vernemq.sh
 sigterm_handler() {
-    echo caught SIGTERM
-    if [ $pid -ne 0 ]; then
-        echo starting shutdown
-        # this will stop the VerneMQ process
-        /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -t 20
-        /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -k
-        sleep 10
-    fi
-    exit 143; # 128 + 15 -- SIGTERM
+  echo starting shutdown
+  /usr/share/vernemq/bin/vmq-admin cluster leave node=VerneMQ@$SELF_IP -k
+  kill $pid
 }
 
-echo running /usr/share/vernemq/bin/vernemq start
-/usr/share/vernemq/bin/vernemq start
-pid=$(ps aux | grep '[b]eam.smp' | awk '{print $1}')
-echo $pid > /var/run/vernemq.pid
 
 echo "config:"
 cat /etc/vernemq/vernemq.conf | while read line; do echo -e "\t$line"; done
-trap 'kill $!; sigterm_handler' 15
-tail -F /var/log/vernemq/*.log &
-wait $!
+
+trap 'sigterm_handler' 15
+/usr/share/vernemq/bin/vernemq console &
+pid=$!
+# we do that to catch SIGTERM
+wait
