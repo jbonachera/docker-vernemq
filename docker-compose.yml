@@ -3,7 +3,7 @@ services:
   vernemq:
     build:
       context: .
-    image: jbonachera/vernemq:v0.0.5-beta4
+    image: jbonachera/vernemq:v0.0.5
     deploy:
       mode: replicated
       replicas: 3
@@ -28,9 +28,15 @@ services:
       - mqtt
     ports:
       - target: 1883
-        published: 8883
+        published: 1883
         protocol: tcp
         mode: ingress
+    volumes:
+      - type: volume
+        target: /var/lib/vernemq
+        volume:
+          nocopy: true
+
 networks:
   mqtt:
 
