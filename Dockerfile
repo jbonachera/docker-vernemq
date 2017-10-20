@@ -22,6 +22,7 @@ COPY vm.args.j2 /etc/vernemq/vm.args.j2
 COPY entrypoint /sbin/entrypoint
 RUN rm -rf /usr/share/vernemq/etc/ && ln -sf /etc/vernemq/ /usr/share/vernemq/etc
 RUN ln -sf /usr/share/vernemq/lib /usr/lib/vernemq
+RUN rm -rf /usr/share/vernemq/data && ln -sf  /var/lib/vernemq /usr/share/vernemq/data
 ENV PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/share/vernemq/bin/
 HEALTHCHECK --interval=10s --timeout=3s CMD [[ $(/usr/share/vernemq/bin/vernemq ping) == "pong" ]]
 ENTRYPOINT ["/sbin/entrypoint"]
