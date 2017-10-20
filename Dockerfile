@@ -14,11 +14,14 @@ VOLUME ["/var/log/vernemq", "/var/lib/vernemq"]
 COPY release/vernemq /usr/share/vernemq
 RUN apk -U add libstdc++ bind-tools libressl2.5-libcrypto && \
     rm -rf /var/cache/apk/*
-RUN mkdir /etc/vernemq/
+RUN mkdir /etc/vernemq
 COPY vernemq.conf.j2 /etc/vernemq/vernemq.conf.j2
 COPY vmq.acl /etc/vernemq/vmq.acl
+COPY rand_cluster_node.escript /var/lib/vernemq/rand_cluster_node.escript
+COPY vm.args.j2 /etc/vernemq/vm.args.j2
 COPY entrypoint /sbin/entrypoint
-RUN ln -sf /etc/vernemq/vernemq.conf /usr/share/vernemq/etc/vernemq.conf
+RUN rm -rf /usr/share/vernemq/etc/ && ln -sf /etc/vernemq/ /usr/share/vernemq/etc
+RUN ln -sf /usr/share/vernemq/lib /usr/lib/vernemq
 ENV PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/share/vernemq/bin/
 HEALTHCHECK --interval=10s --timeout=3s CMD [[ $(/usr/share/vernemq/bin/vernemq ping) == "pong" ]]
 ENTRYPOINT ["/sbin/entrypoint"]
